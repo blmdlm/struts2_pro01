@@ -46,17 +46,15 @@ public class LoginAction extends ActionSupport  implements ServletRequestAware{
 		
 		//验证输入的登录名
 		if (this.getUserName()==null||this.getUserName().length()==0) {
-			addFieldError("username", "请输入登录名");
+			addFieldError("userName", "请输入登录名");
 		}else {
-			System.out.println("userName ok1");
 			DB mysql=new DB();
 			rs=mysql.selectMess(request,this.getUserName());
 			try {
-				System.out.println("userName ok2");
 				if (!rs.next()) {
-					addFieldError("username", "此用户尚未注册！");
+					System.out.println(getUserName());
+					addFieldError("userName", "此登录名尚未注册");
 				}
-				System.out.println("userName ok3");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -65,18 +63,14 @@ public class LoginAction extends ActionSupport  implements ServletRequestAware{
 		if (this.getPassword()==null||this.getPassword().length()==0) {
 			addFieldError("password", "请输入登录密码！");
 		}else {
-			System.out.println("password ok1");
 			DB mysql=new DB();
 			rs=mysql.selectMess(request, this.getUserName());
 			try {
-				System.out.println("password ok2");
 				if (rs.next()) {
 					rs=mysql.selectLogin(request,this.getUserName(),this.getPassword());
-					
 					if (!rs.next()) {
 						addFieldError("password", "登录密码错误！");
 					}
-					System.out.println("password ok3");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -155,8 +149,5 @@ public class LoginAction extends ActionSupport  implements ServletRequestAware{
 	}
 
 
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
 
 }

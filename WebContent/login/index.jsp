@@ -26,12 +26,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<td width="30%" align="center" ><img alt="girl" src="images/girl.jpg" height="280"/></td>
 				<td width="70%">
 					<table border="5" align="center" bgcolor="#99aadd">
-						<tr><td><s:textfield name="userName" label="登录名" size="16"></s:textfield></td></tr>
-						<tr><td><s:password name="password" label="登录密码" size="16"></s:password></td></tr>
+						<tr><td><s:textfield name="userName" label="登录名" ></s:textfield></td></tr>
+						<tr><td><s:password name="password" label="登录密码" ></s:password></td></tr>
 						<tr><td colspan="2" align="center" ><input type="submit" value="确定" /> &nbsp;&nbsp;&nbsp;&nbsp;
 																				<input type="reset" value="清空"/>
 						</td></tr>
-						<tr><td colspan="2" align="center" ><s:a href="register.jsp">注册</s:a></td></tr>
+						<tr><td colspan="2" align="center" ><s:a href="login/register.jsp">注册</s:a></td></tr>
 					</table>
 				</td>
 			</tr>	

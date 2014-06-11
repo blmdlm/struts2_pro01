@@ -334,9 +334,81 @@ public class DB implements ServletRequestAware {
 		}
 		return null;
 	}
+	/**
+	 * 完成注册，把用户的信息录入到数据库中
+	 * @param request
+	 * @param userName
+	 * @param password1
+	 * @param name
+	 * @param sex
+	 * @param birth
+	 * @param nation
+	 * @param edu
+	 * @param work
+	 * @param phone
+	 * @param place
+	 * @param email
+	 * @return
+	 */
+	public String insertMess(HttpServletRequest request, String userName,
+			String password1, String name, String sex, String birth,
+			String nation, String edu, String work, String phone, String place,
+			String email) {
+		resultSet=selectMess(request, userName);
+		try {
+			if (resultSet.next()) {
+				return "one";
+			}else {
+				String sql="insert into user(userName,password,name,sex,birth,nation,edu,work,phone,place,email) values("+
+			"'"+userName+"',"+
+			"'"+password1+"',"+
+			"'"+name+"',"+
+			"'"+sex+"',"+
+			"'"+birth+"',"+
+			"'"+nation+"',"+
+			"'"+edu+"',"+
+			"'"+work+"',"+
+			"'"+phone+"',"+
+			"'"+place+"',"+
+			"'"+email+"');";
+				statement=getStatement();
+				int row=statement.executeUpdate(sql);
+				if (row==1) {
+					String mess=myMessage(request, userName);
+					if (mess.equals("ok")) {
+						return "ok";
+					}else {
+						return null;
+					}
+				}else {
+					return null;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
 		request=arg0;
 	}
 	public String getUrl() {
@@ -384,5 +456,7 @@ public class DB implements ServletRequestAware {
 	public void setStatement(Statement statement) {
 		this.statement = statement;
 	}
+
+
 
 }
