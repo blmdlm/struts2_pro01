@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+<!-- 	<include file="struts-default.xml"></include>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" /> -->
+
+	<package name="default" namespace="/" extends="struts-default">
+
+
+	<!-- 登录 -->
+	<action name="login" class="com.blmdlm.login.Action.LoginAction">
+			<result name="success">/success.jsp</result>
+			<result name="login">/login/index</result>
+	</action> 
+		
+
+	</package>
+
+
+
+	<!-- Add packages here -->
+
+</struts>
