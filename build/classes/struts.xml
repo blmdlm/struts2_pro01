@@ -38,7 +38,36 @@
 			<result name="input">/personMessage/updatePass.jsp</result>
 	</action> 
 	
+	<!-- 添加好友 -->
+	<action name="addFriend" class="com.blmdlm.friendManager.Action.AddFriendAction">
+			<result name="success">/friendManager/lookFriends.jsp</result>
+			<result name="input">/friendManager/addFriend.jsp</result>
+			<result name="error">/friendManager/error.jsp</result>
+	</action> 
+	
+	<!-- 查找好友 -->
+	<action name="findFriend" class="com.blmdlm.friendManager.Action.FindFriendAction">
+			<result name="success">/friendManager/findFriend.jsp</result>
+			<result name="input">/friendManager/findFriend.jsp</result>
+	</action> 
+
+
+	<!-- 修改联系人 -->
+	<action name="updateFriend" class="com.blmdlm.friendManager.Action.UpdateFriendAction">
+			<result name="success">/friendManager/lookFriends.jsp</result>
+			<result name="input">/friendManager/updateFriend.jsp</result>
+			<result name="error">/friendManager/error.jsp</result>
+	</action> 
+	
+	<!-- 删除联系人 -->
+	<action name="deleteFriend" class="com.blmdlm.friendManager.Action.DeleteFriendAction">
+			<result name="success">/friendManager/lookFriends.jsp</result>
+			<result name="input">/friendManager/lookFriends.jsp</result>
+			<result name="error">/friendManager/error.jsp</result>
+	</action> 
+	
 	</package>
+
 
 	<!-- Add packages here -->
 

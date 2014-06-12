@@ -18,6 +18,7 @@ import com.blmdlm.JavaBean.MyFriBean;
 import com.blmdlm.JavaBean.MyMessBean;
 import com.blmdlm.JavaBean.UserBean;
 import com.sun.crypto.provider.RSACipher;
+import com.sun.media.sound.FFT;
 import com.sun.org.apache.xpath.internal.operations.And;
 
 /**
@@ -224,20 +225,20 @@ public class DB implements ServletRequestAware {
 		listName=new ArrayList();
 		resultSet=selectFriAll(request,userName);
 		try {
-			if (resultSet.next()) {
+			while(resultSet.next()) {
+				
 				MyFriBean mess=new MyFriBean();
 				mess.setName(resultSet.getString("name"));
 				mess.setPhone(resultSet.getString("phone"));
 				mess.setWorkplace(resultSet.getString("workplace"));
 				mess.setPlace(resultSet.getString("place"));
 				mess.setQQ(resultSet.getString("QQ"));
-				
+				mess.setEmail(resultSet.getString("email"));
 				listName.add(mess);
+				
+			}
 				session.setAttribute("friends", listName);
 				
-			}else {
-				session.setAttribute("friends", listName);
-			}
 			return "ok";
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -247,7 +248,7 @@ public class DB implements ServletRequestAware {
 	
 	}
 	/**
-	 * 获取通讯录中所有人的信息
+	 * 获取所有联系人的信息
 	 * @param request
 	 * @param userName
 	 * @return
@@ -481,11 +482,204 @@ public class DB implements ServletRequestAware {
 			return null;
 		}
 	}
+	////////////////////////////////////////////////////////////////////////通讯录管理部分//////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 查询联系人
+	 * @param request
+	 * @param userName
+	 * @param friendName
+	 * @return
+	 */
+	public ResultSet selectFriend(HttpServletRequest request, String userName,
+			String friendName) {
+		String sql="select * from friends where userName='"+userName+"' and name='"+friendName+"'; ";
+		statement=getStatement();
+		try {
+			return statement.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	/**
+	 * 查找联系人，并将其信息保存到session对象中
+	 * @param request
+	 * @param userName
+	 * @param friendName
+	 * @return
+	 */
+	public String findFriend(HttpServletRequest request, String userName,
+			String friendName) {
+		ArrayList listName=null;
+		HttpSession session=request.getSession();
+		listName= new ArrayList();
+		resultSet=selectFriend(request, userName, friendName);
+		try {
+			if(resultSet.next()){
+				resultSet=selectFriend(request, userName, friendName);
+				while(resultSet.next()){
+					MyFriBean mess=new MyFriBean();
+					mess.setName(resultSet.getString("name"));
+					mess.setPhone(resultSet.getString("phone"));
+					mess.setEmail(resultSet.getString("email"));
+					mess.setWorkplace(resultSet.getString("workplace"));
+					mess.setPlace(resultSet.getString("place"));
+					mess.setQQ(resultSet.getString("QQ"));
+					listName.add(mess);
+					session.setAttribute("findFriend", listName);
+				}
+			}else {
+				session.setAttribute("findFriend", listName);
+			}
+			return "ok";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	/**
+	 * 添加联系人
+	 * @param request
+	 * @param userName
+	 * @param name
+	 * @param email
+	 * @param workplace
+	 * @param place
+	 * @param qq
+	 * @param phone
+	 * @return
+	 */
+	public String insertFriend(HttpServletRequest request, String userName,
+			String name, String email, String workplace, String place,
+			String qq, String phone) {
+		System.out.println(name+email+workplace+place+phone+qq);
+		
+		
+		//由于在验证部分已经判断联系人已经存在，所以不再验证
+		String sql="insert into friends(userName,name,phone,email,workplace,place,QQ) values('"+userName+"','"+name+"','"+phone+"','"+email+"','"+workplace+"','"+place+"','"+qq+"');";
+		statement=getStatement();
+		int row;
+		try {
+			row = statement.executeUpdate(sql);
+	
+		if (row==1) {
+			//更新session中通讯录的信息
+			String fri=myFriends(request, userName);
+			if(fri.equals("ok")){
+				return "ok";
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	
+	}
+
+	/**
+	 * 修改联系人
+	 * @param request
+	 * @param userName
+	 * @param friendName
+	 * @param name
+	 * @param phone
+	 * @param email
+	 * @param workplace
+	 * @param place
+	 * @param qq
+	 * @return
+	 */
+	public String updateFriend(HttpServletRequest request, String userName,
+			String friendName, String name, String phone, String email,
+			String workplace, String place, String qq) {
+		String del=deleteFriend(request,userName,friendName);
+		if ("ok".equals(del)) {
+			//重新录入信息
+			String in=insertFriend(request, userName, name, email, workplace, place, qq, phone);
+			if ("ok".equals(in)) {
+				String fri=myFriends(request, userName);
+				//
+				
+				if ("ok".equals(fri)) {
+					return "ok";
+				}else {
+					return null;
+				}
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
+	
+	}
 	
 	
 	
-	
-	
+	/**
+	 * 删除联系人
+	 * @param request
+	 * @param userName
+	 * @param friendName
+	 * @return
+	 */
+	public String deleteFriend(HttpServletRequest request, String userName,
+			String friendName) {
+		
+			String sql="delete from friends where userName='"+userName+"' and name='"+friendName+"';";
+		statement=getStatement();
+		int row;
+		try {
+			row = statement.executeUpdate(sql);
+			
+		if (row==1) {
+			String fri=myFriends(request, userName);
+			HttpSession session=request.getSession();
+			session.removeAttribute("findFriend");	
+			if ("ok".equals(fri)) {
+				return "ok";
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	/**
+	 * 从查找到的联系人session对象中获取联系人姓名，并返回
+	 * @param request
+	 * @return
+	 */
+	public String returnFriend(HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		ArrayList login=(ArrayList)session.getAttribute("findFriend");
+		if (login==null||login.size()==0) {
+			return null;
+		}else {
+			for(int i=login.size()-1;i>=0;i--){
+				MyFriBean ff=(MyFriBean)login.get(i);
+				return ff.getName();                   //这个地方处理得不好
+			}
+			
+		}
+		
+		
+		return null;
+	}
 	
 	
 	
@@ -541,6 +735,9 @@ public class DB implements ServletRequestAware {
 	public void setStatement(Statement statement) {
 		this.statement = statement;
 	}
+	
+
+
 
 
 

@@ -31,9 +31,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<table width="100%" align="right" bgcolor="blue">
 		<tr height="10" bgcolor="gray" align="center">
 			<td><a href="personMessage/lookMessage.jsp"  target="main">个人信息管理</a></td>
-			<td><a href="friendManage/lookFriends.jsp"  target="main">通讯录管理</a></td>
+			<td><a href="friendManager/lookFriends.jsp"  target="main">通讯录管理</a></td>
 			<td><a href="dateTimeManager/lookDay.jsp"  target="main">日程安排管理</a></td>
-			<td><a href="fileManage/lookFile.jsp"  target="main">个人文件管理</a></td>
+			<td><a href="fileManager/lookFile.jsp"  target="main">个人文件管理</a></td>
 			<td><a href="login/index.jsp"  target="_top">退出主页面</a></td>
 			<td>欢迎<%=loginName %>使用本系统！</td>
 		</tr>
