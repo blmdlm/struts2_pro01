@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<td colspan="2"><hr lang="center" width="100%" size="20" color="green"/></td>
 			</tr>
 			<tr>
-				<td width="30%" align="center" ><img alt="girl" src="images/girl.jpg" height="280"/></td>
+				<td width="30%" align="center" ><img alt="girl" src="images/girl.jpg" height="400"/></td>
 				<td width="70%">
 					<table border="5" align="center" bgcolor="#99aadd">
 						<tr><td><s:textfield name="userName" label="登录名" ></s:textfield></td></tr>

@@ -391,11 +391,96 @@ public class DB implements ServletRequestAware {
 		}
 
 	}
+	/**
+	 * 返回登录用户的用户名
+	 * @param request2
+	 * @return
+	 */
+	public String returnLogin(HttpServletRequest request) {
+		String loginName=null;
+		HttpSession session=request.getSession();
+		ArrayList login=(ArrayList)session.getAttribute("userName");
+		if (login==null||login.size()==0) {
+			return null;
+		}else {
+			for(int i=login.size()-1;i>=0;i--){
+				UserBean u=(UserBean)login.get(i);
+				loginName=u.getUserName();
+				
+			}
+			return loginName;
+		}
+	}
+	/**
+	 * 更新注册的个人信息
+	 * @param request
+	 * @param userName
+	 * @param name
+	 * @param sex
+	 * @param birth
+	 * @param nation
+	 * @param edu
+	 * @param work
+	 * @param phone
+	 * @param place
+	 * @param email
+	 * @return
+	 */
+	public String updateMess(HttpServletRequest request, String userName,
+			String name, String sex, String birth, String nation, String edu,
+			String work, String phone, String place, String email) {
+		String sql="update user set name='"+name+"',sex='"+sex+"',birth='"+birth+"',nation='"+nation+"',edu='"+edu+"',work='"+work+"',phone='"+phone+"',place='"+place+"',email='"+email+"' where userName= '"+userName+"' ;  ";
+		statement=getStatement();
+		try {
+			int row=statement.executeUpdate(sql);
+			System.out.println("row"+row);
+			if (row==1) {
+				String mess=myMessage(request, userName);
+				if (mess.equals("ok")) {
+					return "ok";
+				}else {
+					return null;
+				}
+			}else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 	
+	/**
+	 * 修改用户密码
+	 * @param request
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	public String updatePass(HttpServletRequest request,String userName,String password){
+		String sql="update user set password='"+password+"' where userName='"+userName+"';";
+		statement=getStatement();
+		int row;
+		try {
+		 row = statement.executeUpdate(sql);
 	
-	
-	
-	
+		if(row==1){
+			String mess=myLogin(request, userName);
+			if (mess.equals("ok")) {
+				return "ok";
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 	
@@ -456,6 +541,7 @@ public class DB implements ServletRequestAware {
 	public void setStatement(Statement statement) {
 		this.statement = statement;
 	}
+
 
 
 
