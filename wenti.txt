@@ -1,0 +1,49 @@
+addFieldError
+There is no Action mapped for namespace [/] and action name [] associated with context path [/personmessage].
+
+首页文件路径不对
+
+========================
+jsp首页图片显示不出来
+--改为images/j.jpg就好了
+
+=====
+jar not load 
+tomcat common/lib已经有的包就不要在导入了
+===
+jsp页面最好设置路径，以免图片请求不到
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+
+<base href="<%=basePath%>">
+=====================
+addFiledError(""."")
+不能显示错误信息，跳转为白白的一页
+
+valdate()方法验证不通过，就会返回input，我没有配置这个啊
+配置之后就好了，哈哈，好爽
+================
+validate 就算出错，也会跑完整个方法，所以注意validate中验证的值是否为null
+===================
+========
+=====
+比如“ok”.equals
+没有错误页面的跳转
+====================================
+lookFriends.jsp 只能显示出一行    因为不是用的while 而是if
+而且邮箱地址显示为null   因为没有写setemail
+=========
+删除联系人之后，记得将其从session属性中删除
+==========
+每次更新联系人信息之后，由于没有了session.findFriend  所以更新之后，为了省事，直接跳转到查看联系人页面，省得再次添加该属性
+=======
+为了省事，也没有采用模糊查询，其实也不是省事，是代码处理的问题
+
+===========
+查找联系人有一个bug一闪而过。。。。。
+
+==========
+日程输入的验证  以及2月只有29  以及输入不为数字的不合法
