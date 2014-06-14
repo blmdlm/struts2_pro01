@@ -681,7 +681,60 @@ public class DB implements ServletRequestAware {
 		return null;
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////日程管理//////////////////////////////////////////////
+	/**
+	 * 查询日程
+	 * @param request
+	 * @param userName
+	 * @param date
+	 * @return
+	 */
+	public ResultSet selectDay(HttpServletRequest request, String userName,
+			String date) {
+		String sql="select * from date where userName='"+userName+"' and date='"+date+"' ;";
+		statement=getStatement();
+		try {
+			return statement.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	
+	}
+	/**
+	 * 添加日程
+	 * @param request
+	 * @param userName
+	 * @param date
+	 * @param thing
+	 * @return
+	 */
+	public String insertDay(HttpServletRequest request, String userName,
+			String date, String thing) {
+		String sql="insert into date(userName,date,thing) values('"+userName+"','"+date+"','"+thing+"');";
+		statement=getStatement();
+		int row;
+		try {
+			row = statement.executeUpdate(sql);
+		
+		if (row==1) {
+			String day=myDayTime(request, userName);
+			if ("ok".equals(day)) {
+				return "ok";
+			}else {
+				return null;
+			}
+		}else {
+			return null;
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	
+	}
 	
 	
 	
@@ -735,6 +788,7 @@ public class DB implements ServletRequestAware {
 	public void setStatement(Statement statement) {
 		this.statement = statement;
 	}
+
 	
 
 

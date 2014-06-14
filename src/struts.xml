@@ -66,8 +66,16 @@
 			<result name="error">/friendManager/error.jsp</result>
 	</action> 
 	
+	<!-- 增加日程-->
+	<action name="addDay" class="com.blmdlm.dateTimeManager.Action.AddDayAction">
+			<result name="success">/dateTimeManager/lookDay.jsp</result>
+			<result name="input">/dateTimeManager/addDay.jsp</result>
+			<result name="error">/friendManager/error.jsp</result>
+	</action> 
+	
 	</package>
-
+	
+	
 
 	<!-- Add packages here -->
 
